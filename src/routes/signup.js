@@ -1,15 +1,23 @@
 const express = require('express');
-
+const {body, validationResult} = require('express-validator');
 const router = express.Router();
+const reqvalidError = require('./../errors/request-validation-error');
 
-router.post('/api/users/signup', (req, res) => {
-    console.log(req);
-    
-    if(!req.body.email || !req.body.password){
-        throw new Error('invalid data');
+router.post('/api/users/signup',[
+    body('email')
+        .isEmail()
+        .withMessage('Email must be valid'),
+    body('password')
+        .trim()
+        .isLength({min: 4, max: 16})
+        .withMessage('Password must be min 4 and max 16 characters')
+], (req, res) => {
+    // check for validation error
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        // handle error
+        throw new reqvalidError(errors.array());
     }
-    
-    // res.send('hi there');
 });
 
 module.exports = router;
