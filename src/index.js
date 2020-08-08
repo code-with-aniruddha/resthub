@@ -4,9 +4,8 @@ currentUserRouter =  require('./routes/current-user'),
 signinRouter =  require('./routes/signin'),
 signoutRouter =  require('./routes/signout'),
 signupRouter =  require('./routes/signup');
-// import { signinRouter } from './routes/signin';
-// import { signoutRouter } from './routes/signout';
-// import { signupRouter } from './routes/signup';
+
+errorHandler = require('./middlewares/error-handler');
 
 const app = express();
 app.use(bodyParser.json());
@@ -36,6 +35,8 @@ app.use(signinRouter);
 app.use(signoutRouter);
 app.use(signupRouter);
 
-app.listen(3000, ()=>{
-    console.log('app is listening on 3000...');
+app.use(errorHandler);
+
+app.listen(8000, ()=>{
+    console.log('app is listening on 8000...');
 });
