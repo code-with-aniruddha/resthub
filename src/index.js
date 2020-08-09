@@ -3,7 +3,8 @@ bodyParser = require('body-parser'),
 currentUserRouter =  require('./routes/current-user'),
 signinRouter =  require('./routes/signin'),
 signoutRouter =  require('./routes/signout'),
-signupRouter =  require('./routes/signup');
+signupRouter =  require('./routes/signup'),
+notFoundError = require('./errors/not-found-error');
 
 errorHandler = require('./middlewares/error-handler');
 
@@ -34,6 +35,13 @@ app.use(currentUserRouter);
 app.use(signinRouter);
 app.use(signoutRouter);
 app.use(signupRouter);
+
+
+
+app.all('*', ()=>{
+    console.log('here');
+    throw new notFoundError('fer');
+});
 
 app.use(errorHandler);
 

@@ -1,11 +1,13 @@
-const reqvalidError = require('./../errors/request-validation-error');
+const CustomError = require('./../errors/custom-error');
+
 const errorHandler = (err, req, res, next) => {
-    // console.log(err);
-    if (err instanceof reqvalidError) {
+    if (err instanceof CustomError) {
+        console.log('error ins', err);
         return res.status(err.statusCode).send({ errors: err.serializeErrors() });
-      }
-    // res.status(err.statusCode).send({
-    //     errors: err.serializeErrors
-    // })
+    }
+    res.status(400).send({
+        errors: [{ message: 'Something went wrong' }]
+    });
 }
+
 module.exports = errorHandler;

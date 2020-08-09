@@ -1,7 +1,9 @@
 const express = require('express');
 const {body, validationResult} = require('express-validator');
 const router = express.Router();
-const reqvalidError = require('./../errors/request-validation-error');
+
+const ReqValidationError = require('./../errors/request-validation-error');
+const DbConnectionError = require('./../errors/db-connection-error');
 
 router.post('/api/users/signup',[
     body('email')
@@ -16,8 +18,9 @@ router.post('/api/users/signup',[
     const errors = validationResult(req);
     if(!errors.isEmpty()){
         // handle error
-        throw new reqvalidError(errors.array());
+        throw new ReqValidationError(errors.array());
     }
+    throw new DbConnectionError('db connection error string');
 });
 
 module.exports = router;
