@@ -4,10 +4,10 @@ const NotFoundErrors = class NotFoundError extends CustomError{
     constructor(){
         super();
         this.statusCode = 404;
+        this.reason = 'Not Found';
     }
     serializeErrors() {
-        console.log('inside class');
-        return [{ message: 'not found' }];
+        return [{ message: this.reason }];
     }
 }
 
