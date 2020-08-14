@@ -1,5 +1,6 @@
 const express = require('express'),
 bodyParser = require('body-parser'),
+mongoose = require('mongoose'),
 currentUserRouter =  require('./routes/current-user'),
 signinRouter =  require('./routes/signin'),
 signoutRouter =  require('./routes/signout'),
@@ -42,6 +43,21 @@ app.post('*', ()=>{
 
 app.use(errorHandler);
 
-app.listen(8000, ()=>{
-    console.log('app is listening on 8000...');
-});
+const start = async () => {
+    try{
+        await mongoose.connect('mongodb://localhost/resthub', {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            useCreateIndex: true
+        })
+    } catch(err){
+        console.log('db error');
+        console.log(err);
+    }
+
+    app.listen(8000, ()=>{
+        console.log('app is listening on 8000...');
+    }); 
+}
+
+start();
