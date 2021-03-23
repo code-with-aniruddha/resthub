@@ -1,6 +1,7 @@
 const express = require('express'),
 bodyParser = require('body-parser'),
 mongoose = require('mongoose'),
+cookieSession = require('cookie-session');
 currentUserRouter =  require('./routes/current-user'),
 signinRouter =  require('./routes/signin'),
 signoutRouter =  require('./routes/signout'),
@@ -10,6 +11,9 @@ errorHandler = require('./middlewares/error-handler'),
 notFoundError = require('./errors/not-found-error');
 
 const app = express();
+app.use(cookieSession({
+    signed: false
+}));
 app.use(bodyParser.json());
 
 // Add headers

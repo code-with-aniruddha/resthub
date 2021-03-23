@@ -7,13 +7,13 @@ const ReqValidationError = class RequestValidationError extends CustomError{
         this.statusCode = 400;
     }
     serializeErrors() {
-            return this.errors.map(err=>{
-                return {
-                    message: err.msg,
-                    field: err.param
-                }
-            });
-        }
+        return this.errors.map(err=>{
+            return {
+                message: err.msg,
+                field: err.param
+            }
+        });
     }
+}
 
 module.exports = ReqValidationError;

@@ -1,4 +1,5 @@
-const express = require('express');
+const express = require('express'),
+jwt = require('jsonwebtoken');
 require('express-async-errors');
 
 const {body, validationResult} = require('express-validator');
@@ -33,6 +34,15 @@ router.post('/api/users/signup',[
     }
     const user = new User({name, email, password, usertype});
     await user.save();
+
+    // generate JWT
+    const jwtUser = jwt.sign({
+        email: user.email,
+        id: user.id
+    }, 'abcd');
+    // store jwt in cookie
+    req.session.jwt = jwtUser;
+    
     res.status(201).send(user);
 });
 
