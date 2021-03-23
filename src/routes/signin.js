@@ -1,8 +1,9 @@
 const express = require('express');
+jwt = require('jsonwebtoken');
 const { body, validationResult } = require('express-validator');
 const BadReqError = require('../errors/bad-request-error');
 const user = require('../models/user');
-const { Password } = require('../services/password');
+const Password = require('./../services/password');
 require('express-async-errors');
 const ReqValidationError = require('./../errors/request-validation-error'); 
 
@@ -29,21 +30,21 @@ router.post('/api/users/signin', [
         if(!existingEmail) {
             throw new BadReqError('Invalid credential');
         }
-
         //check if password matches
         const passwordMatch = await Password.compare(existingEmail.password, password);
         if(!passwordMatch){
+            console.log('here');
             throw new BadReqError('Invalid credential');
         }
 
         // attaching JWT in Cookie
         const jwtUser = jwt.sign({
             email: existingEmail.email,
-            id: existingEmail.id
+            id: existingEmail._id
         }, 'abcd');
         req.session.jwt = jwtUser;
-
-        user.status(200).send(existingEmail);
+        
+        res.status(200).send(existingEmail);
     }
 );
 
